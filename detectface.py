@@ -63,22 +63,31 @@ def debug_display(frame, faces):
 
 
 def shutdown():
+    """
+    Releases the video capture and closes any openCV windows
+    """
     video_capture.release()
     cv2.destroyAllWindows()
 
 
-def plot_structure(faces):
-    faces_array = np.array(faces)
-    print(faces_array)
+def gen_coords(faces):
+    """
+    Requires a faces object as an input.
+    Returns a list of x coordinates and y coordinates.
+    """
     x = [faces[i][0] + faces[i][1] for i in range(len(faces))]
     y = [faces[i][2] + faces[i][3] for i in range(len(faces))]
-    return x, y
+    z = 10
+    return [x, y, z]
 
 
 def get_face_position():
     """
-    
+    Returns the x, y, and z coordinates of the observing face.
     """
+    frame, grey = get_frame(video_capture)
+    faces = detect_face(grey)
+    coords = gen_coords(faces)
     return coords
 
 
@@ -86,7 +95,8 @@ def run_test():
     while True:
         frame, grey = get_frame(video_capture)
         faces = detect_face(grey)
-        print(faces)
+        #print(faces)
+        print(plot_structure(faces))
         debug_display(frame, faces)
         if not debug_display(frame, faces):
             shutdown()
