@@ -84,8 +84,9 @@ def get_face_position():
 
 def run_test():
     while True:
-        frame, grey = get_frame()
+        frame, grey = get_frame(video_capture)
         faces = detect_face(grey)
+        print(faces)
         debug_display(frame, faces)
         if not debug_display(frame, faces):
             shutdown()
