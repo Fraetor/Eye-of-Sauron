@@ -5,9 +5,15 @@ Created on Sat Feb 15 17:12:33 2020
 @author: James
 """
 import cv2
+import numpy as np
 
+# Get cascade from file
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
+
+# Get video from webcam
+video_capture = cv2.VideoCapture(0)
+
 
 def detect_face(grey):
     """
@@ -54,3 +60,44 @@ def debug_display(frame, faces):
         return False
     else:
         return True
+
+
+def shutdown():
+    """
+    Releases the video capture and closes any openCV windows
+    """
+    video_capture.release()
+    cv2.destroyAllWindows()
+
+
+def gen_coords(faces):
+    """
+    Requires a faces object as an input.
+    Returns a list of x coordinates and y coordinates.
+    """
+    x = [faces[i][0] + faces[i][1] for i in range(len(faces))]
+    y = [faces[i][2] + faces[i][3] for i in range(len(faces))]
+    z = 10
+    return [x, y, z]
+
+
+def get_face_position():
+    """
+    Returns the x, y, and z coordinates of the observing face.
+    """
+    frame, grey = get_frame(video_capture)
+    faces = detect_face(grey)
+    coords = gen_coords(faces)
+    return coords
+
+
+def run_test():
+    while True:
+        frame, grey = get_frame(video_capture)
+        faces = detect_face(grey)
+        #print(faces)
+        print(plot_structure(faces))
+        debug_display(frame, faces)
+        if not debug_display(frame, faces):
+            shutdown()
+            break
