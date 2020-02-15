@@ -55,7 +55,7 @@ def debug_display(frame, faces):
         return True
     
 
-# Import cascade 
+# Import cascade for facial recognistion
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
