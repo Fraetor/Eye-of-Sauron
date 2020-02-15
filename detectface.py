@@ -5,9 +5,15 @@ Created on Sat Feb 15 17:12:33 2020
 @author: James
 """
 import cv2
+import numpy as np
 
+# Get cascade from file
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
+
+# Get video from webcam
+video_capture = cv2.VideoCapture(0)
+
 
 def detect_face(grey):
     """
@@ -56,7 +62,31 @@ def debug_display(frame, faces):
         return True
 
 
+def shutdown():
+    video_capture.release()
+    cv2.destroyAllWindows()
+
+
+def plot_structure(faces):
+    faces_array = np.array(faces)
+    print(faces_array)
+    x = [faces[i][0] + faces[i][1] for i in range(len(faces))]
+    y = [faces[i][2] + faces[i][3] for i in range(len(faces))]
+    return x, y
+
+
 def get_face_position():
     """
+    
     """
     return coords
+
+
+def run_test():
+    while True:
+        frame, grey = get_frame()
+        faces = detect_face(grey)
+        debug_display(frame, faces)
+        if not debug_display(frame, faces):
+            shutdown()
+            break
