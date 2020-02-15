@@ -54,3 +54,9 @@ def debug_display(frame, faces):
         return False
     else:
         return True
+
+
+def get_face_position():
+    """
+    """
+    return coords
