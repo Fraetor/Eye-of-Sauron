@@ -103,12 +103,18 @@ def calculate_angles(coords1, coords2):
     Requires the coordinates of the first then the second points as arguments.
     Returns the horizontal and vertical angles in degrees.
     """
-    delta_x = coords2[0] - coords1[0]
-    delta_y = coords2[1] - coords1[1]
-    delta_z = coords2[2] - coords1[2]
-    angle_horizontal = np.rad2deg(np.arctan(delta_x/delta_z))
-    angle_vertical = np.rad2deg(np.arctan(delta_y/delta_z))
-    return angle_horizontal, angle_vertical
+    
+    v1 = np.array([3,4,4])
+    v2 = np.array([1,2,6])
+    v = v1 - v2
+    
+    a = np.degrees(np.arctan(v[0]/v[1]))
+    e = np.degrees(np.arctan(v[2]/v[1]))
+            
+    v = np.array(coords2) - np.array(coords1)
+    a = np.rad2deg(np.arctan(v[0]/v[1]))
+    e = np.rad2deg(np.arctan(v[2]/v[1]))
+    return a, e
 
 
 def get_eye_position(frame):
