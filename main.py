@@ -32,5 +32,5 @@ while True:
     plt.draw()
     horizontal, vertical = get_angles()
     print(horizontal, vertical)
-    ax.view_init(azim=horizontal, elev=vertical)
+    ax.view_init(azim=horizontal, elev=vertical-90)
     plt.pause(0.01)
