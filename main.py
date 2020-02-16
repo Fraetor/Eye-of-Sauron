@@ -16,13 +16,21 @@ def get_angles():
     #print(angle_horizontal, angle_vertical)
     return angle_horizontal, angle_vertical
 
+a = 1
+b = 1
+c = 1
 
 x = np.linspace(-1, 1,  100)
 y = np.linspace(-1, 1, 100)
 
 xgrid, ygrid = np.meshgrid(x, y)
-zgrid = 1 / np.square(xgrid * ygrid)
+#zgrid = 1 / np.square(xgrid * ygrid)
 
+########################
+
+zgrid = np.sqrt(np.square(c) * (1 - ((np.square(xgrid) / np.square(a)) + (np.square(ygrid) / np.square(b)))))
+
+########################
 
 fig = plt.figure("Eye of Sauron")
 ax = fig.gca(projection="3d")
