@@ -13,7 +13,7 @@ import numpy as np
 def get_angles():
     face, eye = df.get_coordinate_pair()
     angle_horizontal, angle_vertical = df.calculate_angles(eye, face)
-    print(angle_horizontal, angle_vertical)
+    #print(angle_horizontal, angle_vertical)
     return angle_horizontal, angle_vertical
 
 u = np.linspace(0, 2 * np.pi, 100)
@@ -27,8 +27,10 @@ ax = fig.gca(projection="3d")
 ax.set_axis_off()
 surface = ax.plot_surface(x, y, z, cmap=cm.hot)
 fig.show()
+
 while True:
-    horizontal, vertical = get_angles()
-    ax.view_init(horizontal, vertical)
     plt.draw()
+    horizontal, vertical = get_angles()
+    print(horizontal, vertical)
+    ax.view_init(azim=horizontal, elev=vertical)
     plt.pause(0.01)
