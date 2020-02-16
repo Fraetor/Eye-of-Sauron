@@ -114,6 +114,10 @@ def calculate_angles(coords1, coords2):
     v = np.array(coords2) - np.array(coords1)
     a = np.rad2deg(np.arctan(v[0]/v[1]))
     e = np.rad2deg(np.arctan(v[2]/v[1]))
+    if np.isnan(a) or np.isnan(e):
+        return 0, 0
+    else:
+        return a, e
 
 
 def get_eye_position(frame):
