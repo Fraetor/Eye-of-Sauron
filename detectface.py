@@ -57,33 +57,35 @@ def debug_display(frame, faces):
     cv2.imshow('Video', frame)
     # Exit if "q" key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.destroyAllWindows()
         return False
     else:
         return True
 
 
-def shutdown():
-    """
-    Releases the video capture and closes any openCV windows
-    """
-    video_capture.release()
-    cv2.destroyAllWindows()
-
-
-def gen_coords(faces):
+def gen_coords(faces, grey):
     """
     Requires a faces object as an input.
     Returns a list of x coordinates and y coordinates.
     """
-    x = [faces[i][0] + faces[i][1] for i in range(len(faces))]
-    y = [faces[i][2] + faces[i][3] for i in range(len(faces))]
-    z = 10
+    x = np.mean([faces[i][0] + faces[i][1] for i in range(len(faces))])
+    y = np.mean([faces[i][2] + faces[i][3] for i in range(len(faces))])
+    z = get_distance(np.mean([face[3] for face in faces]), len(grey))
     return [x, y, z]
+
+
+def get_distance(face_height, frame_height):
+    """
+    Requires the face height and the frame height as arguments.
+    Returns the distance in cm.
+    """
+    natural_distance = frame_height / face_height
+    return natural_distance * 20
 
 
 def get_face_position():
     """
-    Returns the x, y, and z coordinates of the observing face.
+    Returns a list of the x, y, and z coordinates of the observing face.
     """
     frame, grey = get_frame(video_capture)
     faces = detect_face(grey)
@@ -92,12 +94,15 @@ def get_face_position():
 
 
 def run_test():
+    """
+    Runs the debugging display whilest printing coords.
+    """
+    video_capture = cv2.VideoCapture(0)
     while True:
         frame, grey = get_frame(video_capture)
         faces = detect_face(grey)
-        #print(faces)
-        print(plot_structure(faces))
+        print(gen_coords(faces, grey))
         debug_display(frame, faces)
         if not debug_display(frame, faces):
-            shutdown()
+            video_capture.release()
             break
