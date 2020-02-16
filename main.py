@@ -13,11 +13,11 @@ import numpy as np
 def get_angles():
     face, eye = df.get_coordinate_pair()
     angle_horizontal, angle_vertical = df.calculate_angles(eye, face)
-    print(angle_horizontal, angle_vertical)
+    #print(angle_horizontal, angle_vertical)
     return angle_horizontal, angle_vertical
 
 
-x = np.linspace(-1, 1, 100)
+x = np.linspace(-1, 1,  100)
 y = np.linspace(-1, 1, 100)
 
 xgrid, ygrid = np.meshgrid(x, y)
@@ -27,7 +27,7 @@ zgrid = 1 / np.square(xgrid * ygrid)
 fig = plt.figure("Eye of Sauron")
 ax = fig.gca(projection="3d")
 ax.set_axis_off()
-surface = ax.plot_surface(zgrid, ygrid, xgrid, cmap=cm.hsv)
+surface = ax.plot_surface(zgrid, ygrid, xgrid, cmap=cm.hot)
 fig.show()
 while True:
     horizontal, vertical = get_angles()
