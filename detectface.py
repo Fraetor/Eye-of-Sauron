@@ -66,11 +66,16 @@ def debug_display(frame, faces):
 def gen_coords(faces, grey):
     """
     Requires a faces object as an input.
-    Returns a list of x coordinates and y coordinates.
+    Returns a list of the coords.
     """
     x = np.mean([faces[i][0] + faces[i][1] for i in range(len(faces))])
     y = np.mean([faces[i][2] + faces[i][3] for i in range(len(faces))])
     z = get_distance(np.mean([face[3] for face in faces]), len(grey))
+    coords = [x, y, z]
+    if np.isnan(coords).any():
+        eye_pos = get_eye_position(grey)
+        x, y = eye_pos[0], eye_pos[1]
+        z = 10
     return [x, y, z]
 
 
@@ -83,14 +88,44 @@ def get_distance(face_height, frame_height):
     return natural_distance * 20
 
 
-def get_face_position():
+def get_face_position(grey):
     """
     Returns a list of the x, y, and z coordinates of the observing face.
     """
     frame, grey = get_frame(video_capture)
     faces = detect_face(grey)
-    coords = gen_coords(faces)
+    coords = gen_coords(faces, grey)
     return coords
+
+
+def calculate_angles(coords1, coords2):
+    """
+    Requires the coordinates of the first then the second points as arguments.
+    Returns the horizontal and vertical angles in degrees.
+    """
+    delta_x = coords2[0] - coords1[0]
+    delta_y = coords2[1] - coords1[1]
+    delta_z = coords2[2] - coords1[2]
+    angle_horizontal = np.rad2deg(np.arctan(delta_x/delta_z))
+    angle_vertical = np.rad2deg(np.arctan(delta_y/delta_z))
+    return angle_horizontal, angle_vertical
+
+
+def get_eye_position(frame):
+    """
+    Requires a frame as an argument.
+    Returns a pair of coords for the image centre.
+    """
+    return [len(frame[0])/2, len(frame)/2, 0]
+
+
+def get_coordinate_pair():
+    """
+    Runs all of the shit to get the coords we need.
+    Returns a pair of lists of coords, one for the face and one for the eye.
+    """
+    frame, grey = get_frame(video_capture)
+    return get_face_position(grey), get_eye_position(grey)
 
 
 def run_test():

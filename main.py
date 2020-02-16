@@ -6,4 +6,6 @@ Created on Sat Feb 15 13:56:27 2020
 """
 import detectface as df
 
-df.run_test()
+face, eye = df.get_coordinate_pair()
+angle_horizontal, angle_vertical = df.calculate_angles(eye, face)
+print(angle_horizontal, angle_vertical)
