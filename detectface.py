@@ -12,7 +12,7 @@ cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 # Get video from webcam
-video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 
 def detect_face(grey):
@@ -132,7 +132,7 @@ def run_test():
     """
     Runs the debugging display whilest printing coords.
     """
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     while True:
         frame, grey = get_frame(video_capture)
         faces = detect_face(grey)
